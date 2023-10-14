@@ -2,57 +2,59 @@ import { createContext, useState } from "react";
 
 import { Task, TaskService } from "../taskTypes";
 import { mock } from "../mock";
+import { utils } from "../../../utils/utils";
 
 export const TaskContext = createContext<TaskService>({
   tasks: [],
   selectedTask: null,
-  selectTask: () => {},
-  mode: "create",
-  addTask: () => {},
-  removeTask: () => {},
-  updateTask: () => {},
+  add: () => {},
+  remove: () => {},
+  update: () => {},
+  select: () => {},
 });
 
 export function TaskProvider({ children }: React.PropsWithChildren<{}>) {
-  const [tasks, setTasks] = useState<TaskService["tasks"]>(mock);
-  const [selectedTask, setSelectedTask] =
-    useState<TaskService["selectedTask"]>(null);
-  const [mode, setMode] = useState<TaskService["mode"]>("create");
+  const [tasks, setTasks] = useState<Task[]>(mock);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
-  function addTask(_task: Task) {
-    setTasks((old) => [...old, _task]);
-  }
-
-  function removeTask(taskId: number) {
-    setTasks(tasks.filter((oldTask) => oldTask.id !== taskId));
-  }
-
-  function selectTask(taskId: number) {
-    setMode("update");
-    setSelectedTask(tasks.filter((oldTask) => oldTask.id === taskId)[0]);
-  }
-
-  function updateTask(_task: Task) {
-    let newTaskList = tasks.map((oldTask) => {
-      if (oldTask.id === _task.id) return _task;
-      else return oldTask;
-    });
-
-    setTasks(newTaskList);
-    setMode("create");
+  function add(task: Omit<Task, "id">) {
+    const newTask = {
+      ...task,
+      id: utils.uuidv4(),
+    };
+    setTasks((list) => [...list, newTask]);
     setSelectedTask(null);
+  }
+
+  function remove(taskId: string) {
+    setTasks(tasks.filter((task) => task.id !== taskId));
+  }
+
+  function update(task: Task) {
+    const updatedList = tasks.map((item) =>
+      item.id === task.id ? task : item
+    );
+
+    setTasks(updatedList);
+    setSelectedTask(null);
+  }
+
+  function select(taskId: string) {
+    const task = tasks.find((task) => task.id === taskId);
+    if (task) {
+      setSelectedTask(task);
+    }
   }
 
   return (
     <TaskContext.Provider
       value={{
         tasks,
+        add,
+        remove,
+        update,
+        select,
         selectedTask,
-        mode,
-        addTask,
-        removeTask,
-        selectTask,
-        updateTask,
       }}
     >
       {children}

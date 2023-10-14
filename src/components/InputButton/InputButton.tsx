@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";import {
+import { useEffect, useRef, useState } from "react";
+import {
   Keyboard,
   Pressable,
   StyleSheet,
@@ -7,17 +8,17 @@ import { useEffect, useRef, useState } from "react";import {
   View,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useTaskContext } from "../../services/task/useTaskContext";
+import { useTask } from "../../services/task/useTask";
 
 export function InputButton() {
-  const { addTask, tasks, mode, updateTask, selectedTask } = useTaskContext();
+  const { add, update, selectedTask } = useTask();
 
   const inputRef = useRef<TextInput>(null);
-  const [message, setMessage] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
 
   useEffect(() => {
     if (selectedTask) {
-      setMessage(selectedTask.message);
+      setTitle(selectedTask.title);
       inputRef.current?.focus();
     }
   }, [selectedTask]);
@@ -25,19 +26,13 @@ export function InputButton() {
   function handleAddTask() {
     Keyboard.dismiss();
 
-    if (mode === "update") {
-      updateTask({
-        id: selectedTask.id,
-        message,
-      });
+    if (selectedTask) {
+      update({ ...selectedTask, title });
     } else {
-      addTask({
-        id: tasks.length + 1,
-        message,
-      });
+      add({ title });
     }
 
-    setMessage("");
+    setTitle("");
   }
 
   return (
@@ -48,8 +43,8 @@ export function InputButton() {
       >
         <TextInput
           ref={inputRef}
-          value={message}
-          onChangeText={(text) => setMessage(text)}
+          value={title}
+          onChangeText={setTitle}
           style={styles.input}
           placeholder="Adicionar tarefa..."
         />

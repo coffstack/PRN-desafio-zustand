@@ -8,10 +8,10 @@ import {
 import { TaskItem } from "../components/TaskItem/TaskItem";
 import { Header } from "../components/Header/Header";
 import { InputButton } from "../components/InputButton/InputButton";
-import { useTaskContext } from "../services/task/useTaskContext";
+import { useTask } from "../services/task/useTask";
 
 export function HomeScreen() {
-  const { tasks } = useTaskContext();
+  const { tasks } = useTask();
 
   return (
     <KeyboardAvoidingView
