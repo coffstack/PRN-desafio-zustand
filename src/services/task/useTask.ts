@@ -2,10 +2,10 @@ import { useContext } from "react";
 import { TaskService } from "./taskTypes";
 import { TaskContext } from "./providers/TaskProvider";
 
-export function useTaskContext(): TaskService {
+export function useTask(): TaskService {
   const context = useContext(TaskContext);
   if (!context) {
-    throw new Error("Toast must be used within a ToastProvider");
+    throw new Error("useTask must be used within a TaskProvider");
   }
 
   return context;

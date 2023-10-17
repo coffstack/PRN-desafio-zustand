@@ -1,4 +1,4 @@
-<div align="center" >        <img src="https://github.com/coffstack.png" width="250" height="150"/></div>
+<div align="center" >        <img src="https://github.com/coffstack.png" width="250" /></div>
 
 ## Descrição
 
@@ -20,9 +20,12 @@ Sua missão é fazer a transição do gerenciador Context para o gerenciador Zus
 
 ```
    git clone https://github.com/coffstack/PRN-desafio-zustand.git
+
    cd PRN-desafio-zustand
-   npm install
-   npm start
+
+   yarn
+
+   yarn start
 ```
 
 O projeto faz uso do Expo e TypeScript, caso precise, segue o link das documentações: https://docs.expo.dev & https://www.typescriptlang.org/docs/

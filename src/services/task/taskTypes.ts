@@ -1,14 +1,13 @@
 export interface Task {
-  id: number;
-  message: string;
+  id: string;
+  title: string;
 }
 
 export interface TaskService {
   tasks: Task[];
-  selectedTask: Task | null;
-  mode: "create" | "update";
-  selectTask: (taskId: number) => void;
-  addTask: (task: Task) => void;
-  removeTask: (taskId: number) => void;
-  updateTask: (task: Task) => void;
+  selectedTask: Task;
+  add: (task: Omit<Task, "id">) => void;
+  remove: (taskId: string) => void;
+  update: (task: Task) => void;
+  select: (taskId: string) => void;
 }

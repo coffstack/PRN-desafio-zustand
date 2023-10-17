@@ -1,6 +1,6 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import { Task } from "../../services/task/taskTypes";
-import { useTaskContext } from "../../services/task/useTaskContext";
+import { useTask } from "../../services/task/useTask";
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 
@@ -8,21 +8,13 @@ interface Props {
   task: Task;
 }
 export function TaskItem({ task }: Props) {
-  const { removeTask, selectTask } = useTaskContext();
-
-  function handleDelete(taskId: number) {
-    removeTask(taskId);
-  }
-
-  function handleUpdate(taskId: number) {
-    selectTask(taskId);
-  }
+  const { remove, select } = useTask();
 
   return (
     <View style={styles.container}>
       <View style={styles.annotation}>
         <View style={{ flex: 1 }}>
-          <Text style={styles.message}>{task.message}</Text>
+          <Text style={styles.message}>{task.title}</Text>
         </View>
 
         <TouchableOpacity style={[styles.button, styles.buttonUpdate]}>
@@ -30,7 +22,7 @@ export function TaskItem({ task }: Props) {
             name="edit"
             size={24}
             color="#0033ff"
-            onPress={() => handleUpdate(task.id)}
+            onPress={() => select(task.id)}
           />
         </TouchableOpacity>
 
@@ -39,7 +31,7 @@ export function TaskItem({ task }: Props) {
             name="md-trash"
             size={24}
             color="#cb1a1a"
-            onPress={() => handleDelete(task.id)}
+            onPress={() => remove(task.id)}
           />
         </TouchableOpacity>
       </View>
