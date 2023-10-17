@@ -60,8 +60,7 @@ export function InputButton() {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
-    marginTop: 20,
-    marginBottom: 20,
+    marginBottom: 15,
   },
   containerInput: {
     flexDirection: "row",

@@ -1,32 +1,37 @@
 import Constants from "expo-constants";
 import {
+  FlatList,
   KeyboardAvoidingView,
+  ListRenderItemInfo,
   Platform,
-  ScrollView,
   StyleSheet,
 } from "react-native";
 import { TaskItem } from "../components/TaskItem/TaskItem";
 import { Header } from "../components/Header/Header";
 import { InputButton } from "../components/InputButton/InputButton";
 import { useTask } from "../services/task/useTask";
+import { Task } from "../services/task/taskTypes";
 
 export function HomeScreen() {
   const { tasks } = useTask();
 
+  function renderItem({ item }: ListRenderItemInfo<Task>) {
+    return <TaskItem task={item} />;
+  }
+
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <ScrollView style={styles.container} keyboardShouldPersistTaps="handled">
-        <Header />
+      <Header />
+      <InputButton />
 
-        {tasks.map((task) => {
-          return <TaskItem task={task} key={task.id} />;
-        })}
-
-        <InputButton />
-      </ScrollView>
+      <FlatList
+        data={tasks}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+      />
     </KeyboardAvoidingView>
   );
 }
